@@ -129,17 +129,17 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
                 <TableCell>{item.status}</TableCell>
               </TableRow>
             )}
-            <Pagination
-              className="pagination-bar"
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              pageSize={PageSize}
-              totalCount={deviceItems.length}
-              onPageChange={page => setCurrentPage(page)}
-            />
           </TableBody>
         </Table>
-      </TableContainer>
+        <Pagination
+          className="pagination-bar"
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageSize={PageSize}
+          totalCount={deviceItems.length}
+          onPageChange={page => setCurrentPage(page)}
+        />  
+      </TableContainer> 
     </>
   );
 };
