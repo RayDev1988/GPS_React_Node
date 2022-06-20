@@ -104,7 +104,7 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
     const lastPageIndex = firstPageIndex + PageSize;
     setCurrentTableData(deviceItems.slice(firstPageIndex, lastPageIndex))
   }, [currentPage]);
-  console.log(currentTableData)
+  
   return (
     <>
       <TableContainer>
