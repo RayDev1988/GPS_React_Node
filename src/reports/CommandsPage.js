@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   TableContainer, Table, TableRow, TableCell, TableHead, TableBody, makeStyles, IconButton,
 } from '@material-ui/core';
+import Pagination from '../components/pagination'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -49,6 +50,22 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
 
   const user = useSelector((state) => state.session.user);
   const [items, setItems] = useState([]);
+  const [currentTableData, setCurrentTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const PageSize = 20;
+  const [deviceItems, setDeviceItems] = useState([]);
+
+  useEffect(() => {
+
+    const t_items = items.filter((item) => selectedDevice === 'All' ||selectedDevice === getDeviceName(item.deviceId));
+    setDeviceItems(t_items);
+
+    setCurrentPage(1);
+
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
+  }, [selectedDevice])
 
   useEffectAsync(async () => {
     var url = "/api/commands";
@@ -56,7 +73,22 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
     if (response.ok) {
       setItems(await response.json());
     }
-  }, [updateTimestamp]);
+  }, [updateTimestamp])
+
+  useEffectAsync(async () => {
+    var url = "/api/commands";
+    const response = await fetch(url);
+    let t_items = [];
+    if (response.ok) {
+      t_items = await response.json()
+      setItems(t_items);
+    }
+    setDeviceItems(t_items);
+
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
+  }, []);
 
   const devices = useSelector((state) => state.devices.items);
 
@@ -67,34 +99,47 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
     for (const key in users) if (users.hasOwnProperty(key) && users[key].id === userId) return users[key].name;
   };
 
+  useEffect(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    setCurrentTableData(deviceItems.slice(firstPageIndex, lastPageIndex))
+  }, [currentPage]);
+  console.log(currentTableData)
   return (
     <>
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>User</TableCell>
-            <TableCell>Device</TableCell>
-            <TableCell>Command</TableCell>
-            <TableCell>Value</TableCell>
-            <TableCell>When</TableCell>
-            <TableCell>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {items.map((item) => 
-                (selectedDevice ==="All" || selectedDevice === getDeviceName(item.deviceId)) && <TableRow key={item.id}>
-                  <TableCell>{getUserName(item.userId)}</TableCell>
-                  <TableCell>{getDeviceName(item.deviceId)}</TableCell>
-                  <TableCell>{item.commandType}</TableCell>
-                  <TableCell>{item.count && (item.commandType === "Overspeed" ? item.count + "mph" : item.count + "mile")}</TableCell>
-                  <TableCell>{moment(item.createdAt).format('LLL')}</TableCell>
-                  <TableCell>{item.status}</TableCell>
-                </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>User</TableCell>
+              <TableCell>Device</TableCell>
+              <TableCell>Command</TableCell>
+              <TableCell>Value</TableCell>
+              <TableCell>When</TableCell>
+              <TableCell>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentTableData.map((item) => <TableRow key={item.id}>
+                <TableCell>{getUserName(item.userId)}</TableCell>
+                <TableCell>{getDeviceName(item.deviceId)}</TableCell>
+                <TableCell>{item.commandType}</TableCell>
+                <TableCell>{item.count && (item.commandType === "Overspeed" ? item.count + "mph" : item.count + "mile")}</TableCell>
+                <TableCell>{moment(item.createdAt).format('LLL')}</TableCell>
+                <TableCell>{item.status}</TableCell>
+              </TableRow>
+            )}
+            <Pagination
+              className="pagination-bar"
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              pageSize={PageSize}
+              totalCount={deviceItems.length}
+              onPageChange={page => setCurrentPage(page)}
+            />
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };
@@ -105,38 +150,40 @@ const CommandsPage = () => {
   const devices = useSelector((state) => state.devices.items);
   var defaultSelect = "All";
 
-  if(id) {
-    for (const key in devices){
-      if(devices[key].id === Number(id)) {
+  if (id) {
+    for (const key in devices) {
+      if (devices[key].id === Number(id)) {
         defaultSelect = devices[key].name;
         break;
       }
     }
   }
-  
+
   const [selectedDevice, setSelectedDevice] = useState(defaultSelect);
   const getSelectDevices = () => {
     var items = [];
-    items.push({id: "All", name: "All"});
-    for (const key in devices) items.push({id: devices[key].name, name: devices[key].name});
+    items.push({ id: "All", name: "All" });
+    for (const key in devices) items.push({ id: devices[key].name, name: devices[key].name });
     return items;
   }
 
   return (
     <>
-    <ReportLayout>
-      {/* <EditCollectionView content={CommandsView} editPath="/share" endpoint="commands" /> */}
-      <SelectField
-        margin="normal"
-        value={selectedDevice}
-        emptyValue={null}
-        onChange={(event) => setSelectedDevice(event.target.value)}
-        data={getSelectDevices}
-        label='Device'
-        variant="filled"
-      />
-      <CommandsView selectedDevice={selectedDevice}/>
-    </ReportLayout>
+      <ReportLayout>
+        {/* <EditCollectionView content={CommandsView} editPath="/share" endpoint="commands" /> */}
+        <SelectField
+          margin="normal"
+          value={selectedDevice}
+          emptyValue={null}
+          onChange={(event) =>
+            setSelectedDevice(event.target.value)
+          }
+          data={getSelectDevices}
+          label='Device'
+          variant="filled"
+        />
+        <CommandsView selectedDevice={selectedDevice} />
+      </ReportLayout>
     </>
   );
 };

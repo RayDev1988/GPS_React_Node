@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   TableContainer, Table, TableRow, TableCell, TableHead, TableBody, makeStyles, IconButton,
 } from '@material-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
+import Pagination from '../components/pagination'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -49,6 +50,44 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
 
   const user = useSelector((state) => state.session.user);
   const [items, setItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentTableData, setCurrentTableData] = useState([]);
+  const [deviceItems, setDeviceItems] = useState([]);
+  const PageSize = 20;
+
+  useEffect(()=> {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    setCurrentTableData(deviceItems.slice(firstPageIndex, lastPageIndex))
+  }, [currentPage]);
+
+  useEffect(() => {
+
+    const t_items = items.filter((item) => selectedDevice === 'All' ||selectedDevice === getDeviceName(item.deviceId));
+    setDeviceItems(t_items);
+
+    setCurrentPage(1);
+
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
+  }, [selectedDevice])
+
+  useEffectAsync(async () => {
+    var url;
+    if(user.administrator) url = `/api/warnings`;
+    else url = `/api/warnings/${user.id}`;
+    const response = await fetch(url);
+    let t_items = []
+    if (response.ok) {
+      t_items = await response.json()
+      setItems(t_items);
+    }
+    setDeviceItems(t_items)
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
+  }, []);
 
   useEffectAsync(async () => {
     var url;
@@ -91,16 +130,23 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((item) => 
-                (selectedDevice ==="All" || selectedDevice === getDeviceName(item.deviceId)) && 
+          {currentTableData.map((item) =>  
                 <TableRow key={item.id}>
                   <TableCell>{getDeviceName(item.deviceId)}</TableCell>
                   <TableCell>{item.warning}</TableCell>
-                  <TableCell>{moment(item.createdAt).format('LLL')}</TableCell>
+                  <TableCell>{moment(item.deviceTime).format('LLL')}</TableCell>
                 </TableRow>
           )}
         </TableBody>
       </Table>
+      <Pagination 
+        className="pagination-bar"
+        currentPage={currentPage}
+        setCurrentPage = { setCurrentPage }
+        pageSize={PageSize}
+        totalCount={deviceItems.length}
+        onPageChange={page => setCurrentPage(page)}
+      />  
     </TableContainer>
     </>
   );

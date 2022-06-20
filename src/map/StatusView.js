@@ -126,7 +126,7 @@ const StatusView = ({
               </ListItem>
               <ListItem classes={{ container: classes.listItemContainer }}>
                 <ListItemText primary="Signal" />
-                {(moment().diff(moment(device.lastSeen), "seconds") < 300) && <ListItemSecondaryAction>
+                {(moment().diff(moment(device.lastPosition), "seconds") < 300) && <ListItemSecondaryAction>
                   {
                     device.signal === 0 && <SignalCellular0BarIcon /> ||
                     device.signal <= 8 && <SignalCellular1BarIcon /> ||
@@ -139,9 +139,16 @@ const StatusView = ({
               </ListItem>
 
               <ListItem classes={{ container: classes.listItemContainer }}>
-                <ListItemText primary="Last seen" />
+                <ListItemText primary="Last Position" />
                 <ListItemSecondaryAction>
-                  {formatDate(device.lastSeen)}
+                  {formatDate(device.lastPosition)}
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              <ListItem classes={{ container: classes.listItemContainer }}>
+                <ListItemText primary="Last Connect" />
+                <ListItemSecondaryAction>
+                  {formatDate(device.lastConnect)}
                 </ListItemSecondaryAction>
               </ListItem>
 
@@ -154,7 +161,7 @@ const StatusView = ({
 
               <ListItem classes={{ container: classes.listItemContainer }}>
                 <ListItemText primary={t('positionSpeed')} />
-                {(moment().diff(moment(device.lastSeen), "seconds") < 60) && <ListItemSecondaryAction>
+                {(moment().diff(moment(device.lastPosition), "seconds") < 60) && <ListItemSecondaryAction>
                   {formatSpeed(position.speed, speedUnit, t)}
                 </ListItemSecondaryAction> }
               </ListItem>
@@ -229,15 +236,15 @@ function CommandSendDialog(props) {
   };
 
   var commands;
-  if(user.id) commands = [ 'Unlock' , 'Lock' , 'Panic' , 'Kill/Unkill' , 'Overspeed' , 'Geofence' , 'Reboot' ];
-  else commands = [ 'Unlock' , 'Lock' , 'Panic'];
+  if(user.id) commands = [ 'Unlock' , 'Lock' , 'Horn' , 'Unkill' , 'Kill' , 'Overspeed' , 'Geofence' , 'Reboot' ];
+  else commands = [ 'Unlock' , 'Lock' , 'Horn'];
 
   const [title, setTitle] = useState("");
   const [count, setCount] = useState('80');
 
   const handleListItemClick = async (value) => {
     // onClose(value);
-    if(value === "Overspeed" || value === "Geofence" || value === "Kill/Unkill") { 
+    if(value === "Overspeed" || value === "Geofence" || value === "Kill" || value === "Unkill") { 
       // count = prompt(value, "input value");
       setTitle(value);
       setOpenChild(true);
@@ -256,10 +263,10 @@ function CommandSendDialog(props) {
     setOpenChild(false);
   };
   const handleChildSend = async() => {
-    var command = title;
-    if(title === "Kill/Unkill") command = "Kill";
-    let url = `/api/command?command=${command}&deviceId=${props.deviceId}&userId=${user.id}`;
-    if(command !== "Kill") url = url + `&count=${count}`;
+    // var command = title;
+    // if(title === "Kill/Unkill") command = "Kill";
+    let url = `/api/command?command=${title}&deviceId=${props.deviceId}&userId=${user.id}`;
+    if(title === "Overspeed" || title === "Geofence") url = url + `&count=${count}`;
     const response = await fetch(url);
     if (response.ok) {
       console.log("Sent Command.");
@@ -268,10 +275,10 @@ function CommandSendDialog(props) {
   };
   
   const getDetail = (command) => {
-    var tempCommand = command;
-    if(command === "Kill/Unkill") tempCommand = "Kill";
+    // var tempCommand = command;
+    // if(command === "Kill/Unkill") tempCommand = "Kill";
     for (var key in commandsDetail) {
-      if(key === tempCommand){
+      if(key === command){
         if(key === "Overspeed") return commandsDetail[key].count + "mph";
         else if(key === "Geofence") return commandsDetail[key].count + "mile";
         return formatDate(commandsDetail[key].createdAt);
@@ -280,7 +287,7 @@ function CommandSendDialog(props) {
     return false;
   }
   const getStatus = (command) => {
-    if(command === "Kill/Unkill") command = "Kill";
+    // if(command === "Kill/Unkill") command = "Kill";
     return commandsDetail[command].status;
   }
 
@@ -313,9 +320,9 @@ function CommandSendDialog(props) {
       <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            { title !== "Kill/Unkill" ? "Please enter the value here..." : "Are you surre?" }
+            { !(title === "Kill" || title === "Unkill") ? "Please enter the value here..." : "Are you surre?" }
           </DialogContentText>
-          { title !== "Kill/Unkill" && <TextField
+          { !(title === "Kill" || title === "Unkill") && <TextField
             autoFocus
             // margin="dense"
             id="value"

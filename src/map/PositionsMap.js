@@ -33,7 +33,7 @@ const PositionsMap = ({ positions }) => {
   const createFeature = (devices, position) => {
     const device = devices[position.deviceId];
     let name = device.name;
-    if(moment().diff(moment(device.lastSeen), "seconds") < 60) name = name + " : " + position.speed + "mph";
+    if(moment().diff(moment(device.lastPostion), "seconds") < 60) name = name + " : " + position.speed + "mph";
     return {
       deviceId: position.deviceId,
       name: name,

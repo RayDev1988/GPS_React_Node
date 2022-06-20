@@ -183,7 +183,7 @@ const ReplayPage = () => {
                       value={index}
                       onChange={(_, index) => setIndex(index)}
                       valueLabelDisplay="auto"
-                      valueLabelFormat={(i) => (i < positions.length ? formatPosition(positions[i], 'createdAt') : '')}
+                      valueLabelFormat={(i) => (i < positions.length ? formatPosition(positions[i], 'deviceTime') : '')}
                       ValueLabelComponent={TimeLabel}
                     />
                   </Grid>
@@ -207,7 +207,7 @@ const ReplayPage = () => {
                         <FastForwardIcon />
                       </IconButton>
                     </Grid>
-                    <Grid item xs={2}>{formatPosition(positions[index], 'createdAt')}</Grid>
+                    <Grid item xs={2}>{formatPosition(positions[index], 'deviceTime')}</Grid>
                     <Grid item xs>{positions[index].speed + " mph"}</Grid>
                     <Grid item xs>{"Signal: " + (Number(positions[index].signal)/32*100).toFixed(0) + "%"}</Grid>
                   </Grid>

@@ -158,7 +158,6 @@ const DevicePage = () => {
               <TextField
                 margin="normal"
                 value={item.apiKey || ''}
-                // onChange={(event) => setItem({ ...item, iccid: event.target.value })}
                 label="Api-Key"
                 variant="filled"
                 disabled="true"
@@ -167,6 +166,16 @@ const DevicePage = () => {
               </>
               }
 
+              <FormControlLabel
+                control={<Checkbox checked={item.isDoubleLock} onChange={(event) => setItem({ ...item, isDoubleLock: event.target.checked })} />}
+                label="Double Pulse Lock"
+              />
+
+              <FormControlLabel
+                control={<Checkbox checked={item.isDoubleUnlock} onChange={(event) => setItem({ ...item, isDoubleUnlock: event.target.checked })} />}
+                label="Double Pulse Unlock"
+              />
+              
               {id && <FormControlLabel
                 control={<Checkbox checked={item.disabled} onChange={(event) => setItem({ ...item, disabled: event.target.checked })} />}
                 label={t('sharedDisabled')}
