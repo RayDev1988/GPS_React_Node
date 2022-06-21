@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { useSelector } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
 import MainPage from './MainPage';
+import MainSite from './MainSite'
 import RouteReportPage from './reports/RouteReportPage';
 import ServerPage from './admin/ServerPage';
 import UsersPage from './admin/UsersPage';
@@ -47,6 +48,7 @@ import theme from './theme';
 import GeofencesPage from './GeofencesPage';
 import GeofencePage from './GeofencePage';
 import { LocalizationProvider } from './LocalizationProvider';
+import { BrowserRouter } from 'react-router-dom';
 // import { WonderPush } from 'react-wonderpush';
 
 const App = () => {
@@ -60,6 +62,7 @@ const App = () => {
         <SocketController />
         {/* <CachingController /> */}
         <Switch>
+          <Route exact path="/" component={MainSite} />
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/register" component={RegisterForm} />
           <Route exact path="/reset-password" component={ResetPasswordForm} />
@@ -67,7 +70,7 @@ const App = () => {
           <Route>
             {!initialized ? (<LinearProgress />) : (
               <Switch>
-                <Route exact path="/" component={MainPage} />
+                <Route exact path="/main" component={MainPage} />
                 <Route exact path="/replay" component={ReplayPage} />
                 <Route exact path="/share" component={SharePage} />
                 <Route exact path="/position/:id?" component={PositionPage} />

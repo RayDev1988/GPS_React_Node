@@ -57,7 +57,7 @@ const LoginForm = () => {
     if (response.ok) {
       const user = await response.json();
       dispatch(sessionActions.updateUser(user));
-      history.push('/');
+      history.push('/main');
     } else {
       setFailed(true);
       setPassword('');
