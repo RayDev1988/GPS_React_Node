@@ -67,13 +67,13 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
     setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
   }, [selectedDevice])
 
-  useEffectAsync(async () => {
-    var url = "/api/commands";
-    const response = await fetch(url);
-    if (response.ok) {
-      setItems(await response.json());
-    }
-  }, [updateTimestamp])
+  // useEffectAsync(async () => {
+  //   var url = "/api/commands";
+  //   const response = await fetch(url);
+  //   if (response.ok) {
+  //     setItems(await response.json());
+  //   }
+  // }, [updateTimestamp])
 
   useEffectAsync(async () => {
     var url = "/api/commands";
@@ -88,7 +88,7 @@ const CommandsView = ({ updateTimestamp, selectedDevice }) => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
-  }, []);
+  }, [updateTimestamp]);
 
   const devices = useSelector((state) => state.devices.items);
 

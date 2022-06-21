@@ -55,7 +55,7 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
   const [deviceItems, setDeviceItems] = useState([]);
   const PageSize = 20;
 
-  useEffect(()=> {
+  useEffect(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     setCurrentTableData(deviceItems.slice(firstPageIndex, lastPageIndex))
@@ -63,7 +63,7 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
 
   useEffect(() => {
 
-    const t_items = items.filter((item) => selectedDevice === 'All' ||selectedDevice === getDeviceName(item.deviceId));
+    const t_items = items.filter((item) => selectedDevice === 'All' || selectedDevice === getDeviceName(item.deviceId));
     setDeviceItems(t_items);
 
     setCurrentPage(1);
@@ -75,7 +75,7 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
 
   useEffectAsync(async () => {
     var url;
-    if(user.administrator) url = `/api/warnings`;
+    if (user.administrator) url = `/api/warnings`;
     else url = `/api/warnings/${user.id}`;
     const response = await fetch(url);
     let t_items = []
@@ -87,21 +87,21 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
-  }, []);
-
-  useEffectAsync(async () => {
-    var url;
-    if(user.administrator) url = `/api/warnings`;
-    else url = `/api/warnings/${user.id}`;
-    const response = await fetch(url);
-    if (response.ok) {
-      setItems(await response.json());
-    }
   }, [updateTimestamp]);
+
+  // useEffectAsync(async () => {
+  //   var url;
+  //   if (user.administrator) url = `/api/warnings`;
+  //   else url = `/api/warnings/${user.id}`;
+  //   const response = await fetch(url);
+  //   if (response.ok) {
+  //     setItems(await response.json());
+  //   }
+  // }, [updateTimestamp]);
 
   const devices = useSelector((state) => state.devices.items);
 
-  
+
 
   const getDeviceName = (deviceId) => {
     for (const key in devices) if (devices.hasOwnProperty(key) && devices[key].id === deviceId) return devices[key].name;
@@ -120,34 +120,34 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
 
   return (
     <>
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Device</TableCell>
-            <TableCell>Event</TableCell>
-            <TableCell>When</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {currentTableData.map((item) =>  
-                <TableRow key={item.id}>
-                  <TableCell>{getDeviceName(item.deviceId)}</TableCell>
-                  <TableCell>{item.warning}</TableCell>
-                  <TableCell>{moment(item.deviceTime).format('LLL')}</TableCell>
-                </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <Pagination 
-        className="pagination-bar"
-        currentPage={currentPage}
-        setCurrentPage = { setCurrentPage }
-        pageSize={PageSize}
-        totalCount={deviceItems.length}
-        onPageChange={page => setCurrentPage(page)}
-      />  
-    </TableContainer>
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Device</TableCell>
+              <TableCell>Event</TableCell>
+              <TableCell>When</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentTableData.map((item) =>
+              <TableRow key={item.id}>
+                <TableCell>{getDeviceName(item.deviceId)}</TableCell>
+                <TableCell>{item.warning}</TableCell>
+                <TableCell>{moment(item.deviceTime).format('LLL')}</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <Pagination
+          className="pagination-bar"
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageSize={PageSize}
+          totalCount={deviceItems.length}
+          onPageChange={page => setCurrentPage(page)}
+        />
+      </TableContainer>
     </>
   );
 };
@@ -158,38 +158,38 @@ const EventReportPage = () => {
   const devices = useSelector((state) => state.devices.items);
   var defaultSelect = "All";
 
-  if(id) {
-    for (const key in devices){
-      if(devices[key].id === Number(id)) {
+  if (id) {
+    for (const key in devices) {
+      if (devices[key].id === Number(id)) {
         defaultSelect = devices[key].name;
         break;
       }
     }
   }
-  
+
   const [selectedDevice, setSelectedDevice] = useState(defaultSelect);
   const getSelectDevices = () => {
     var items = [];
-    items.push({id: "All", name: "All"});
-    for (const key in devices) items.push({id: devices[key].name, name: devices[key].name});
+    items.push({ id: "All", name: "All" });
+    for (const key in devices) items.push({ id: devices[key].name, name: devices[key].name });
     return items;
   }
 
   return (
     <>
-    <ReportLayout>
-      <SelectField
-        margin="normal"
-        value={selectedDevice}
-        emptyValue={null}
-        onChange={(event) => setSelectedDevice(event.target.value)}
-        data={getSelectDevices}
-        label='Device'
-        variant="filled"
-      />
-      {/* <EditCollectionView content={EventsView} editPath="/share" endpoint="events" /> */}
-      <EventsView selectedDevice={selectedDevice}/>
-    </ReportLayout>
+      <ReportLayout>
+        <SelectField
+          margin="normal"
+          value={selectedDevice}
+          emptyValue={null}
+          onChange={(event) => setSelectedDevice(event.target.value)}
+          data={getSelectDevices}
+          label='Device'
+          variant="filled"
+        />
+        {/* <EditCollectionView content={EventsView} editPath="/share" endpoint="events" /> */}
+        <EventsView selectedDevice={selectedDevice} />
+      </ReportLayout>
     </>
   );
 };
