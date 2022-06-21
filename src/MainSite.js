@@ -6,7 +6,9 @@ const MainSite = () => {
 
   const history = useHistory()
   const LoginEvent = () => {
-      history.push('/login')
+    const session = window.localStorage.getItem('session');
+    if(!session) history.push('/login');
+    else history.push('/main')
   }
 
   return (
@@ -96,16 +98,16 @@ const MainSite = () => {
                 
                 <figure className="position-absolute top-0 end-0 zi-n1 mt-n10 me-n10" style={{width: '32rem'}}>
                     <svg viewBox="0 0 451 902" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M451 820C247.2 820 82 654.8 82 451C82 247.2 247.2 82 451 82" stroke="white" stroke-width="164" stroke-miterlimit="10"/>
+                        <path d="M451 820C247.2 820 82 654.8 82 451C82 247.2 247.2 82 451 82" stroke="white" stroke-width="164" strokeMiterlimit="10"/>
                     </svg>
                 </figure>
-                <figure class="position-absolute bottom-0 start-0 zi-n1 mb-n10 me-n10" style={{width: '21rem'}}>
+                <figure className="position-absolute bottom-0 start-0 zi-n1 mb-n10 me-n10" style={{width: '21rem'}}>
                     <svg viewBox="0 0 451 902" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path opacity="0.125" d="M0 82C203.8 82 369 247.2 369 451C369 654.8 203.8 820 0 820" stroke="url(#paint1_linear)" stroke-width="164" stroke-miterlimit="10"/>
+                        <path opacity="0.125" d="M0 82C203.8 82 369 247.2 369 451C369 654.8 203.8 820 0 820" stroke="url(#paint1_linear)" stroke-width="164" strokeMiterlimit="10"/>
                         <defs>
                             <linearGradient id="paint1_linear" x1="323.205" y1="785.242" x2="-97.6164" y2="56.3589" gradientUnits="userSpaceOnUse">
-                                <stop offset="0" stop-color="white" stop-opacity="0"/>
-                                <stop offset="1" stop-color="#377dff"/>
+                                <stop offset="0" stopColor="white" stopOpacity="0"/>
+                                <stop offset="1" stopColor="#377dff"/>
                             </linearGradient>
                         </defs>
                     </svg>

@@ -108,6 +108,10 @@ const MainPage = () => {
   const handleClose = () => {
     setCollapsed(!collapsed);
   };
+  
+  const session = window.localStorage.getItem('session');
+  console.log("session", session);
+  if(!session) history.push('/login');
 
   useEffect(() => setCollapsed(isTablet), [isTablet]);
 

@@ -83,13 +83,10 @@ const SocketController = () => {
       };
     }
     const session = window.localStorage.getItem('session');
-    if(!session) history.push('/login');
-    else if(session) {
+    if(session) {
       const response = await fetch(`/api/session/${session}`);
       if (response.ok) {
         dispatch(sessionActions.updateUser(await response.json()));
-      } else {
-        history.push('/login');
       }
     }
     return null;
