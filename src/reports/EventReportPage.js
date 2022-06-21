@@ -89,16 +89,6 @@ const EventsView = ({ updateTimestamp, selectedDevice }) => {
     setCurrentTableData(t_items.slice(firstPageIndex, lastPageIndex));
   }, [updateTimestamp]);
 
-  // useEffectAsync(async () => {
-  //   var url;
-  //   if (user.administrator) url = `/api/warnings`;
-  //   else url = `/api/warnings/${user.id}`;
-  //   const response = await fetch(url);
-  //   if (response.ok) {
-  //     setItems(await response.json());
-  //   }
-  // }, [updateTimestamp]);
-
   const devices = useSelector((state) => state.devices.items);
 
 
