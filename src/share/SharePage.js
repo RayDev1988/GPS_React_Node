@@ -92,7 +92,7 @@ const SharePage = () => {
               <Toolbar disableGutters>
                 <Grid container alignItems="center">
                   <Grid item>
-                    <IconButton onClick={() => history.push('/')}>
+                    <IconButton onClick={() => history.push('/main')}>
                       <ArrowBackIcon />
                     </IconButton>
                   </Grid>

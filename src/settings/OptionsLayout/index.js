@@ -89,7 +89,7 @@ const OptionsLayout = ({ children }) => {
           classes={{ root: classes.drawerContainer, paper: classes.drawer }}
         >
           <div className={classes.drawerHeader}>
-            <IconButton onClick={() => history.push('/')}>
+            <IconButton onClick={() => history.push('/main')}>
               <ArrowBackIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>

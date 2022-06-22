@@ -81,7 +81,6 @@ export default function ContactSite() {
                         {/* <!-- Heading --> */}
                         <div className="mb-5">
                             <h1>Get in touch</h1>
-                            <p>We bring vending to businesses and facilities in the Orlando, FL area.</p>
                         </div>
                         {/* <!-- End Heading --> */}
 
@@ -110,21 +109,16 @@ export default function ContactSite() {
                         {/* <!-- End Leaflet --> */}
 
                         <div className="row">
-                            <div className="col-sm-6">
-                                <h5 className="mb-1">Call us:</h5>
-                                <p>+1 (023) 456-6789</p>
-                            </div>
-                            {/* <!-- End Col --> */}
 
                             <div className="col-sm-6">
                                 <h5 className="mb-1">Email us:</h5>
-                                <p>contact@moovetrax.com</p>
+                                <p>support@moovetrax.com</p>
                             </div>
                             {/* <!-- End Col --> */}
 
                             <div className="col-sm-6">
                                 <h5 className="mb-1">Address:</h5>
-                                <p>Orlando, FL 32806, United States</p>
+                                <p>Orlando FL 32827</p>
                             </div>
                             {/* <!-- End Col --> */}
                         </div>
@@ -181,7 +175,7 @@ export default function ContactSite() {
                                                 {/* <!-- Form --> */}
                                                 <div className="mb-3">
                                                     <label className="form-label" htmlFor="phone">Phone</label>
-                                                    <input type="tel" className="form-control form-control-lg" name="phone" id="phone" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" />
+                                                    <input type="tel" className="form-control form-control-lg" name="phone" id="phone" aria-label="+x(xxx)xxx-xx-xx" />
                                                 </div>
                                                 {/* <!-- End Form --> */}
                                             </div>

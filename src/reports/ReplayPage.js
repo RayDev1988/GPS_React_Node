@@ -148,7 +148,7 @@ const ReplayPage = () => {
               <Toolbar disableGutters>
                 <Grid container alignItems="center">
                   <Grid item>
-                    <IconButton onClick={() => {if(user.id)history.push('/'); else history.goBack();}}>
+                    <IconButton onClick={() => {if(user.id)history.push('/main'); else history.goBack();}}>
                       <ArrowBackIcon />
                     </IconButton>
                   </Grid>
