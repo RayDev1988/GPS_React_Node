@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from "react-router-dom"
 import "../public/assets/css/main.css"
 
 const MainSite = () => {
 
   const history = useHistory()
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "./assets/js/animation.js";
+    script.async = true;
+    document.body.appendChild(script);
+  return () => {
+      document.body.removeChild(script);
+    }
+  }, []);
+
   const LoginEvent = () => {
     const session = window.localStorage.getItem('session');
     if(!session) history.push('/login');
@@ -20,7 +31,7 @@ const MainSite = () => {
           }'>
             <div className="container">
                 <nav className="js-mega-menu navbar-nav-wrap">
-                    <a className="navbar-brand" href="./index.html" aria-label="LandingPage">
+                    <a className="navbar-brand" onClick={() => history.push('/')} aria-label="LandingPage">
                         <img className="navbar-brand-logo" src="./assets/img/logo.png" alt="Logo" />
                     </a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +49,7 @@ const MainSite = () => {
                                     <a id="loginMenu" className="nav-link" aria-current="page" onClick={LoginEvent} role="button" aria-expanded="false">Login</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a id="contactMenu" className="nav-link" aria-current="page" href="./contact.html" role="button" aria-expanded="false">Contact</a>
+                                    <a id="contactMenu" className="nav-link" aria-current="page" onClick={() => history.push('/contact')} role="button" aria-expanded="false">Contact</a>
                                 </li>
                                 <li className="nav-item">
                                     <a id="pricingMenu" className="nav-link" aria-current="page" href="https://www.ebay.com/itm/234525339636" target="_blank" role="button" aria-expanded="false">Pricing Buy</a>
@@ -58,7 +69,7 @@ const MainSite = () => {
                     <div className="w-lg-65 text-center mx-lg-auto">
                         <div className="mb-5">
                             <h1 className="display-6 mb-3">
-                                MooveTrax <span className="text-primary">4G</span> GPS For Car Rental.<br/>Designed By Car Rental
+                                MooveTrax <span className="text-primary">4G</span> GPS For Car Rental.<br/>Designed By Car Rental.
                             </h1>
                             <p className="lead">
                                 MooveTrax provides fast real time tracking of your cars.with the most advanced features for car rental companies and Car Share individuals who are using car shares such as Turo or HyreCar.
@@ -67,7 +78,7 @@ const MainSite = () => {
 
                         <div className="d-grid d-sm-flex justify-content-sm-center align-items-sm-center gap-3">
                             <a className="btn btn-primary btn-transition" href="./contact.html">Contact</a>
-                            <small>or</small>
+                            
                             <a className="btn btn-soft-dark btn-transition" href="https://www.ebay.com/itm/234525339636" target="_blank">Pricing Buy <i className="bi-chevron-right small ms-1"></i></a>
                         </div>
                     </div>
@@ -98,7 +109,7 @@ const MainSite = () => {
                 
                 <figure className="position-absolute top-0 end-0 zi-n1 mt-n10 me-n10" style={{width: '32rem'}}>
                     <svg viewBox="0 0 451 902" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M451 820C247.2 820 82 654.8 82 451C82 247.2 247.2 82 451 82" stroke="white" stroke-width="164" strokeMiterlimit="10"/>
+                        <path d="M451 820C247.2 820 82 654.8 82 451C82 247.2 247.2 82 451 82" stroke="white" strokeWidth="164" strokeMiterlimit="10"/>
                     </svg>
                 </figure>
                 <figure className="position-absolute bottom-0 start-0 zi-n1 mb-n10 me-n10" style={{width: '21rem'}}>

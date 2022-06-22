@@ -163,6 +163,7 @@ const LoginForm = () => {
             <Button onClick={() => history.push('/register')} /*disabled={!registrationEnabled}*/ color="secondary">
               {t('loginRegister')}
             </Button>
+            <Button onClick={() => history.push('/reset-password')} className={classes.resetPassword} underline="none" color="secondary">{t('loginReset')}</Button>
           </Grid>
           {/* <Grid item xs>
             <FormControl variant="filled" fullWidth>

@@ -7,6 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import StartPage from '../../StartPage';
 import { useTranslation } from '../../LocalizationProvider';
 import useQuery from '../../common/useQuery';
+import { api_call, console_log } from '../../helpers/untils';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -39,16 +40,18 @@ const ResetPasswordForm = () => {
     event.preventDefault();
     let response;
     if (!token) {
-      response = await fetch('/api/password/reset', {
+      response = await api_call('/api/password/reset', {
         method: 'POST',
-        body: new URLSearchParams(`email=${encodeURIComponent(email)}`),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email}),
       });
     } else {
-      response = await fetch('/api/password/update', {
+      response = await api_call('/api/password/update', {
         method: 'POST',
         body: new URLSearchParams(`token=${encodeURIComponent(token)}&password=${encodeURIComponent(password)}`),
       });
     }
+    console_log("response:::", response)
     if (response.ok) {
       setSnackbarOpen(true);
     }

@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
 import MainPage from './MainPage';
 import MainSite from './MainSite'
+import ContactSite from './ContactSite'
 import RouteReportPage from './reports/RouteReportPage';
 import ServerPage from './admin/ServerPage';
 import UsersPage from './admin/UsersPage';
@@ -63,6 +64,7 @@ const App = () => {
         {/* <CachingController /> */}
         <Switch>
           <Route exact path="/" component={MainSite} />
+          <Route exact path="/contact" component={ContactSite} />
           <Route exact path="/login" component={LoginForm} />
           <Route exact path="/register" component={RegisterForm} />
           <Route exact path="/reset-password" component={ResetPasswordForm} />
