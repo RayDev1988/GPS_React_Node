@@ -7,9 +7,6 @@ export const console_log = (...log_data)=>{
     console.log (...log_data)
 }
 export const api_call = async (url, params = null) => {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAA')
-    console.log(url)
-    console.log(params.body.email)
     try{
         let response = null;
         if(params) {
