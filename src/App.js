@@ -14,30 +14,11 @@ import DevicesPage from './admin/DevicesPage';
 import DevicePage from './DevicePage';
 import UserPage from './UserPage';
 import SocketController from './SocketController';
-// import NotificationsPage from './settings/NotificationsPage';
-// import NotificationPage from './settings/NotificationPage';
 import LinksPage from './settings/LinksPage';
-// import GroupsPage from './settings/GroupsPage';
-// import GroupPage from './settings/GroupPage';
 import PositionPage from './PositionPage';
 import EventReportPage from './reports/EventReportPage';
 import ReplayPage from './reports/ReplayPage';
 import CommandsPage from './reports/CommandsPage';
-// import TripReportPage from './reports/TripReportPage';
-// import StopReportPage from './reports/StopReportPage';
-// import SummaryReportPage from './reports/SummaryReportPage';
-// import ChartReportPage from './reports/ChartReportPage';
-// import DriversPage from './settings/DriversPage';
-// import DriverPage from './settings/DriverPage';
-// import CalendarsPage from './settings/CalendarsPage';
-// import CalendarPage from './settings/CalendarPage';
-// import ComputedAttributesPage from './settings/ComputedAttributesPage';
-// import ComputedAttributePage from './settings/ComputedAttributePage';
-// import MaintenancesPage from './settings/MaintenancesPage';
-// import MaintenancePage from './settings/MaintenancePage';
-// import StatisticsPage from './admin/StatisticsPage';
-// import CachingController from './CachingController';
-
 import TemporaryPage from './TemporaryPage';
 import SharePage from './share/SharePage';
 
@@ -50,18 +31,15 @@ import GeofencesPage from './GeofencesPage';
 import GeofencePage from './GeofencePage';
 import { LocalizationProvider } from './LocalizationProvider';
 import { BrowserRouter } from 'react-router-dom';
-// import { WonderPush } from 'react-wonderpush';
 
 const App = () => {
   const initialized = useSelector((state) => !!state.session.server && !!state.session.user);
 
   return (
-    // <WonderPush options = {{webKey: "0402d3e177619bd42295016f32154f14226974d99d9840d7b4a0fae629fca27c"}}>
     <LocalizationProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <SocketController />
-        {/* <CachingController /> */}
         <Switch>
           <Route exact path="/" component={MainSite} />
           <Route exact path="/contact" component={ContactSite} />
